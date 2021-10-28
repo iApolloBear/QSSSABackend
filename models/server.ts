@@ -3,7 +3,6 @@ import { createServer, Server as HttpServer } from "http";
 import { Server as SocketServer } from "socket.io";
 import cors from "cors";
 import roleRoutes from "../routes/role";
-import userRoutes from "../routes/user";
 import authRoutes from "../routes/auth";
 
 class Server {
@@ -13,7 +12,6 @@ class Server {
   private io: SocketServer;
   private apiRoutes = {
     roles: "/api/roles",
-    users: "/api/users",
     auth: "/api/auth",
   };
 
@@ -32,7 +30,6 @@ class Server {
 
   routes() {
     this.app.use(this.apiRoutes.roles, roleRoutes);
-    this.app.use(this.apiRoutes.users, userRoutes);
     this.app.use(this.apiRoutes.auth, authRoutes);
   }
 
