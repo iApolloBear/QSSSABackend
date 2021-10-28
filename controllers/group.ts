@@ -25,6 +25,9 @@ export const createGroups = async (req: Request, res: Response) => {
           name: groups[i],
           color: colors[i],
           identifier: identifier ? identifier : "",
+          qsssa: {
+            connect: { accessCode: code },
+          },
         },
       });
       if (chunks[i] !== undefined && chunks[i].length > 0) {

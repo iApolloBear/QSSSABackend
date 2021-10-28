@@ -26,6 +26,7 @@ model User {
   QSSSA         Qsssa[]
   UsersOnQSSSAS UsersOnQSSSAS[]
   UsersOnGroups UsersOnGroups[]
+  Message       Message[]
 }
 
 model Qsssa {
@@ -39,6 +40,7 @@ model Qsssa {
   teacher        User            @relation(fields: [teacherId], references: [id])
   teacherId      String
   UsersOnQSSSAS  UsersOnQSSSAS[]
+  UserGroup      UserGroup[]
 }
 
 model UsersOnQSSSAS {
@@ -55,15 +57,27 @@ model UserGroup {
   name          String
   color         String
   identifier    String?
-  active        Boolean @default(false)
+  active        Boolean         @default(false)
   UsersOnGroups UsersOnGroups[]
+  qsssa         Qsssa           @relation(fields: [qsssaId], references: [id])
+  qsssaId       String
+  Message       Message[]
 }
 
 model UsersOnGroups {
-  user    User   @relation(fields: [userId], references: [id])
+  user    User      @relation(fields: [userId], references: [id])
   userId  String
-  group   UserGroup  @relation(fields: [groupId], references: [id])
+  group   UserGroup @relation(fields: [groupId], references: [id])
   groupId String
 
   @@id([userId, groupId])
+}
+
+model Message {
+  id      String    @id
+  text    String
+  user    User      @relation(fields: [userId], references: [id])
+  userId  String
+  group   UserGroup @relation(fields: [groupId], references: [id])
+  groupId String
 }
