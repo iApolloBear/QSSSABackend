@@ -3,6 +3,7 @@ import { createServer, Server as HttpServer } from "http";
 import { Server as SocketServer } from "socket.io";
 import cors from "cors";
 import roleRoutes from "../routes/role";
+import userRoutes from "../routes/user";
 
 class Server {
   private app: Application;
@@ -11,6 +12,7 @@ class Server {
   private io: SocketServer;
   private apiRoutes = {
     roles: "/api/roles",
+    users: "/api/users",
   };
 
   constructor() {
@@ -28,6 +30,7 @@ class Server {
 
   routes() {
     this.app.use(this.apiRoutes.roles, roleRoutes);
+    this.app.use(this.apiRoutes.users, userRoutes);
   }
 
   listen() {
