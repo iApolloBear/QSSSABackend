@@ -7,15 +7,16 @@ import randomColor from "randomcolor";
 export const createGroups = async (req: Request, res: Response) => {
   try {
     const { code, groups, identifier } = req.body;
-    const qsssa = await prisma.usersOnQSSSAS.findMany({
-      where: { qsssa: { accessCode: code } },
+    const qsssa = await prisma.qsssa.findUnique({
+      include: { UsersOnQSSSAS: true },
+      where: { accessCode: code },
     });
     if (!qsssa)
       return res.status(404).json({
         msg: "QSSSA Not Found",
       });
-    const chunkSize = Math.ceil(qsssa.length / groups.length);
-    const chunks: any[][] = sliceIntoChunks(qsssa, chunkSize);
+    const chunkSize = Math.ceil(qsssa.UsersOnQSSSAS.length / groups.length);
+    const chunks: any[][] = sliceIntoChunks(qsssa.UsersOnQSSSAS, chunkSize);
     const colors = randomColor({ luminosity: "light", count: 36 });
     for (let i = 0; i < groups.length; i++) {
       let id = randomBytes(16).toString("hex");
@@ -25,9 +26,7 @@ export const createGroups = async (req: Request, res: Response) => {
           name: groups[i],
           color: colors[i],
           identifier: identifier ? identifier : "",
-          qsssa: {
-            connect: { accessCode: code },
-          },
+          qsssaId: qsssa.id,
         },
       });
       if (chunks[i] !== undefined && chunks[i].length > 0) {
@@ -49,5 +48,31 @@ export const createGroups = async (req: Request, res: Response) => {
     res.status(500).json({
       msg: "Server Error",
     });
+  }
+};
+
+export const getQSSSAGroups = async (req: Request, res: Response) => {
+  try {
+    const { code } = req.params;
+    const groups = await prisma.userGroup.findMany({
+      select: {
+        name: true,
+        color: true,
+        UsersOnGroups: {
+          select: {
+            user: { select: { name: true } },
+          },
+        },
+      },
+      where: {
+        qsssa: { accessCode: code },
+      },
+    });
+    res.json({
+      groups,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Server Error" });
   }
 };

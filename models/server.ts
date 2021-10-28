@@ -8,6 +8,7 @@ import authRoutes from "../routes/auth";
 import qsssaRoutes from "../routes/qsssa";
 import groupRoutes from "../routes/group";
 import uploadRoutes from "../routes/upload";
+import teacherRoutes from "../routes/teacher";
 
 class Server {
   private app: Application;
@@ -20,6 +21,7 @@ class Server {
     qsssa: "/api/qsssa",
     group: "/api/group",
     upload: "/api/upload",
+    teacher: "/api/teacher",
   };
 
   constructor() {
@@ -47,6 +49,7 @@ class Server {
     this.app.use(this.apiRoutes.qsssa, qsssaRoutes);
     this.app.use(this.apiRoutes.group, groupRoutes);
     this.app.use(this.apiRoutes.upload, uploadRoutes);
+    this.app.use(this.apiRoutes.teacher, teacherRoutes);
   }
 
   listen() {
