@@ -5,6 +5,7 @@ import cors from "cors";
 import roleRoutes from "../routes/role";
 import authRoutes from "../routes/auth";
 import qsssaRoutes from "../routes/qsssa";
+import groupRoutes from "../routes/group";
 
 class Server {
   private app: Application;
@@ -15,6 +16,7 @@ class Server {
     roles: "/api/roles",
     auth: "/api/auth",
     qsssa: "/api/qsssa",
+    group: "/api/group",
   };
 
   constructor() {
@@ -34,6 +36,7 @@ class Server {
     this.app.use(this.apiRoutes.roles, roleRoutes);
     this.app.use(this.apiRoutes.auth, authRoutes);
     this.app.use(this.apiRoutes.qsssa, qsssaRoutes);
+    this.app.use(this.apiRoutes.group, groupRoutes);
   }
 
   listen() {

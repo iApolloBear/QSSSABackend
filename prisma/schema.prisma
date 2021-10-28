@@ -25,6 +25,7 @@ model User {
   roleId        String
   QSSSA         Qsssa[]
   UsersOnQSSSAS UsersOnQSSSAS[]
+  UsersOnGroups UsersOnGroups[]
 }
 
 model Qsssa {
@@ -47,4 +48,22 @@ model UsersOnQSSSAS {
   qsssaId String
 
   @@id([userId, qsssaId])
+}
+
+model UserGroup {
+  id            String          @id
+  name          String
+  color         String
+  identifier    String?
+  active        Boolean @default(false)
+  UsersOnGroups UsersOnGroups[]
+}
+
+model UsersOnGroups {
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  group   UserGroup  @relation(fields: [groupId], references: [id])
+  groupId String
+
+  @@id([userId, groupId])
 }
