@@ -7,6 +7,7 @@ import roleRoutes from "../routes/role";
 import authRoutes from "../routes/auth";
 import qsssaRoutes from "../routes/qsssa";
 import groupRoutes from "../routes/group";
+import uploadRoutes from "../routes/upload";
 
 class Server {
   private app: Application;
@@ -18,6 +19,7 @@ class Server {
     auth: "/api/auth",
     qsssa: "/api/qsssa",
     group: "/api/group",
+    upload: "/api/upload",
   };
 
   constructor() {
@@ -44,6 +46,7 @@ class Server {
     this.app.use(this.apiRoutes.auth, authRoutes);
     this.app.use(this.apiRoutes.qsssa, qsssaRoutes);
     this.app.use(this.apiRoutes.group, groupRoutes);
+    this.app.use(this.apiRoutes.upload, uploadRoutes);
   }
 
   listen() {

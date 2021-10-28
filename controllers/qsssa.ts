@@ -3,6 +3,68 @@ import { Request, Response } from "express";
 import { randomBytes } from "crypto";
 import { uploadFile } from "../helpers/uploadFile";
 
+export const getQSSSAS = async (req: Request, res: Response) => {
+  try {
+    const uid = req.uid;
+    const role = await prisma.user.findUnique({
+      select: {
+        role: {
+          select: { role: true },
+        },
+      },
+      where: {
+        id: uid,
+      },
+    });
+    if (!role)
+      return res.status(404).json({ msg: "This user doesn't have role" });
+    let qsssas;
+    switch (role.role.role) {
+      case "STUDENT_ROLE":
+        qsssas = await prisma.usersOnQSSSAS.findMany({
+          select: {
+            qsssa: {
+              select: {
+                topic: true,
+                question: true,
+                sentenceStem: true,
+                accessCode: true,
+              },
+            },
+          },
+          where: {
+            userId: uid,
+          },
+        });
+        break;
+      case "TEACHER_ROLE":
+        qsssas = await prisma.qsssa.findMany({
+          select: {
+            topic: true,
+            question: true,
+            sentenceStem: true,
+            accessCode: true,
+          },
+          where: {
+            teacherId: uid,
+          },
+        });
+        break;
+      case "ADMIN_ROLE":
+        qsssas = await prisma.qsssa.findMany();
+      default:
+        qsssas = await prisma.qsssa.findMany();
+        break;
+    }
+    res.json({ qsssas });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Server Error",
+    });
+  }
+};
+
 export const createQSSSA = async (req: Request, res: Response) => {
   try {
     const uid = req.uid;
