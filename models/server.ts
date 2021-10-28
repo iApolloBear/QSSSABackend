@@ -4,6 +4,7 @@ import { Server as SocketServer } from "socket.io";
 import cors from "cors";
 import roleRoutes from "../routes/role";
 import authRoutes from "../routes/auth";
+import qsssaRoutes from "../routes/qsssa";
 
 class Server {
   private app: Application;
@@ -13,6 +14,7 @@ class Server {
   private apiRoutes = {
     roles: "/api/roles",
     auth: "/api/auth",
+    qsssa: "/api/qsssa",
   };
 
   constructor() {
@@ -31,6 +33,7 @@ class Server {
   routes() {
     this.app.use(this.apiRoutes.roles, roleRoutes);
     this.app.use(this.apiRoutes.auth, authRoutes);
+    this.app.use(this.apiRoutes.qsssa, qsssaRoutes);
   }
 
   listen() {
