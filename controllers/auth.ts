@@ -63,3 +63,22 @@ export const register = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const renewToken = async (req: Request, res: Response) => {
+  const uid = req.uid;
+  const token = await generateJWT(uid);
+  const user = await prisma.user.findUnique({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+    },
+    where: { id: uid },
+  });
+
+  res.json({
+    token,
+    user,
+  });
+};
