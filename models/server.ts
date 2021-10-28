@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import { createServer, Server as HttpServer } from "http";
 import { Server as SocketServer } from "socket.io";
 import cors from "cors";
+import fileUpload from "express-fileupload";
 import roleRoutes from "../routes/role";
 import authRoutes from "../routes/auth";
 import qsssaRoutes from "../routes/qsssa";
@@ -30,6 +31,12 @@ class Server {
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.static("public"));
+    this.app.use(
+      fileUpload({
+        useTempFiles: true,
+        tempFileDir: "/tmp/",
+      })
+    );
   }
 
   routes() {

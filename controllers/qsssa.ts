@@ -1,6 +1,7 @@
 import { prisma } from "../db/connection";
 import { Request, Response } from "express";
 import { randomBytes } from "crypto";
+import { uploadFile } from "../helpers/uploadFile";
 
 export const createQSSSA = async (req: Request, res: Response) => {
   try {
@@ -8,6 +9,10 @@ export const createQSSSA = async (req: Request, res: Response) => {
     const { topic, question, sentenceStem, onlyRecordings } = req.body;
     const id = randomBytes(16).toString("hex");
     const code = randomBytes(16).toString("hex").slice(0, 6);
+    let name;
+    if (req.files) {
+      name = await uploadFile(req.files, ["png", "jpg", "jpeg"], "images");
+    }
     const qsssa = await prisma.qsssa.create({
       data: {
         id: id,
@@ -15,6 +20,7 @@ export const createQSSSA = async (req: Request, res: Response) => {
         question: question,
         sentenceStem: sentenceStem,
         accessCode: code,
+        img: name,
         onlyRecordings: onlyRecordings,
         teacher: {
           connect: { id: uid },
@@ -29,6 +35,24 @@ export const createQSSSA = async (req: Request, res: Response) => {
       },
     });
 
+    res.json({
+      qsssa,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Server Error",
+    });
+  }
+};
+
+export const getQSSSA = async (req: Request, res: Response) => {
+  try {
+    const { code } = req.params;
+    const qsssa = await prisma.qsssa.findUnique({
+      where: { accessCode: code },
+    });
+    if (!qsssa) return res.status(404).json({ msg: "QSSSA Not Found" });
     res.json({
       qsssa,
     });
