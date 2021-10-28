@@ -25,8 +25,13 @@ export const createGroups = async (req: Request, res: Response) => {
           id: id,
           name: groups[i],
           color: colors[i],
-          identifier: identifier ? identifier : "",
+          identifier: identifier ? identifier : null,
           qsssaId: qsssa.id,
+          selectedId: identifier
+            ? null
+            : qsssa.UsersOnQSSSAS[
+                Math.floor(Math.random() * qsssa.UsersOnQSSSAS.length)
+              ].userId,
         },
       });
       if (chunks[i] !== undefined && chunks[i].length > 0) {
@@ -58,6 +63,12 @@ export const getQSSSAGroups = async (req: Request, res: Response) => {
       select: {
         name: true,
         color: true,
+        identifier: true,
+        selected: {
+          select: {
+            name: true,
+          },
+        },
         UsersOnGroups: {
           select: {
             user: { select: { name: true } },

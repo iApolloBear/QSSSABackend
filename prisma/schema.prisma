@@ -64,8 +64,8 @@ model UserGroup {
   qsssa         Qsssa           @relation(fields: [qsssaId], references: [id])
   qsssaId       String
   Message       Message[]
-  selected      User            @relation(fields: [selectedId], references: [id])
-  selectedId    String
+  selected      User?           @relation(fields: [selectedId], references: [id])
+  selectedId    String?
 }
 
 model UsersOnGroups {
