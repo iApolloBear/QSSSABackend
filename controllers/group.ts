@@ -60,18 +60,10 @@ export const getQSSSAGroups = async (req: Request, res: Response) => {
   try {
     const { code } = req.params;
     const groups = await prisma.userGroup.findMany({
-      select: {
-        name: true,
-        color: true,
-        identifier: true,
-        selected: {
-          select: {
-            name: true,
-          },
-        },
+      include: {
         UsersOnGroups: {
           select: {
-            user: { select: { name: true } },
+            user: { select: { id: true, name: true } },
           },
         },
       },

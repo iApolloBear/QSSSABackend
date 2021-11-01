@@ -21,19 +21,13 @@ export const getQSSSAS = async (req: Request, res: Response) => {
     let qsssas;
     switch (role.role.role) {
       case "STUDENT_ROLE":
-        qsssas = await prisma.usersOnQSSSAS.findMany({
-          select: {
-            qsssa: {
-              select: {
-                topic: true,
-                question: true,
-                sentenceStem: true,
-                accessCode: true,
+        qsssas = await prisma.qsssa.findMany({
+          where: {
+            UsersOnQSSSAS: {
+              some: {
+                userId: uid,
               },
             },
-          },
-          where: {
-            userId: uid,
           },
         });
         break;
