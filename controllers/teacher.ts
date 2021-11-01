@@ -21,3 +21,28 @@ export const getMyQSSSAStudents = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getMyStudents = async (req: Request, res: Response) => {
+  try {
+    const uid = req.uid;
+    const students = await prisma.usersOnQSSSAS.findMany({
+      distinct: ["userId"],
+      include: {
+        user: true,
+      },
+      where: {
+        qsssa: {
+          teacherId: uid,
+        },
+      },
+    });
+    res.json({
+      students,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Server Error",
+    });
+  }
+};
