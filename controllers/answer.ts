@@ -1,12 +1,25 @@
 import { prisma } from "../db/connection";
 import { randomBytes } from "crypto";
 import { Request, Response } from "express";
+import { uploadBlob } from "../helpers/uploadFile";
 
-export const createMessage = async (req: Request, res: Response) => {
+export const createAnswer = async (req: Request, res: Response) => {
   try {
     const uid = req.uid;
-    const { text, groupId } = req.body;
+    const { groupId } = req.body;
     const id = randomBytes(16).toString("hex");
+    const name = await uploadBlob(req.files, "mp3", "audio");
+    let answer = await prisma.answer.findFirst({
+      where: {
+        AND: [{ userId: uid }, { groupId: groupId }],
+      },
+    });
+    if (answer)
+      await prisma.answer.delete({
+        where: {
+          id: answer.id,
+        },
+      });
     const group = await prisma.userGroup.findFirst({
       where: {
         id: groupId,
@@ -16,15 +29,15 @@ export const createMessage = async (req: Request, res: Response) => {
       return res.status(404).json({
         msg: "Group Not Found",
       });
-    const message = await prisma.message.create({
+    answer = await prisma.answer.create({
       data: {
         id: id,
-        text: text,
+        audio: name,
         userId: uid,
         groupId: group.id,
       },
     });
-    res.json({ message });
+    res.json({ answer });
   } catch (err) {
     console.log(err);
     res.status(500).json({

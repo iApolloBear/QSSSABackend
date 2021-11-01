@@ -5,7 +5,7 @@ import { existsSync } from "fs";
 
 export const getFile = async (req: Request, res: Response) => {
   const { collection, id } = req.params;
-  let model;
+  let model: any;
   switch (collection) {
     case "qsssas":
       model = await prisma.qsssa.findUnique({ where: { accessCode: id } });
@@ -15,18 +15,20 @@ export const getFile = async (req: Request, res: Response) => {
         });
       }
       break;
-    /*case "answers":
-      model = await Answer.findById(id);
+    case "answers":
+      model = await prisma.answer.findUnique({
+        where: { id: id },
+      });
       if (!model) {
         return res.status(404).json({ msg: `${collection} not found` });
       }
-      break;*/
+      break;
 
     default:
       return res.status(500).json({ msg: "Collection not found" });
   }
 
-  /*if (model.audio) {
+  if (model.audio) {
     const audioPath = path.join(
       __dirname,
       `../../uploads/audio/${model.audio}`
@@ -34,7 +36,7 @@ export const getFile = async (req: Request, res: Response) => {
     if (existsSync(audioPath)) {
       return res.sendFile(audioPath);
     }
-  }*/
+  }
 
   if (model.img) {
     const imgPath = path.join(__dirname, `../../uploads/images/${model.img}`);
