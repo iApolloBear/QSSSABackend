@@ -33,12 +33,6 @@ export const getQSSSAS = async (req: Request, res: Response) => {
         break;
       case "TEACHER_ROLE":
         qsssas = await prisma.qsssa.findMany({
-          select: {
-            topic: true,
-            question: true,
-            sentenceStem: true,
-            accessCode: true,
-          },
           where: {
             teacherId: uid,
           },

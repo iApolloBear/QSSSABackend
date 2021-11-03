@@ -12,6 +12,7 @@ import teacherRoutes from "../routes/teacher";
 import studentRoutes from "../routes/student";
 import messageRoutes from "../routes/message";
 import answerRoutes from "../routes/answer";
+import Sockets from "./socket";
 
 class Server {
   private app: Application;
@@ -49,6 +50,10 @@ class Server {
     );
   }
 
+  configureSockets() {
+    new Sockets(this.io);
+  }
+
   routes() {
     this.app.use(this.apiRoutes.roles, roleRoutes);
     this.app.use(this.apiRoutes.auth, authRoutes);
@@ -63,6 +68,7 @@ class Server {
 
   listen() {
     this.middlewares();
+    this.configureSockets();
     this.routes();
     this.server.listen(this.port, () =>
       console.log(`Server running on port ${this.port}`)
