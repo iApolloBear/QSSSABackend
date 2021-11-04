@@ -32,3 +32,19 @@ export const createMessage = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getMessages = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const meesages = prisma.message.findMany({
+      where: {
+        groupId: id,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Server Error",
+    });
+  }
+};

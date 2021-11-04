@@ -59,11 +59,23 @@ export const createGroups = async (req: Request, res: Response) => {
 export const getQSSSAGroups = async (req: Request, res: Response) => {
   try {
     const { code } = req.params;
-    const groups = await prisma.userGroup.findMany({
+    let groups = await prisma.userGroup.findMany({
       include: {
         UsersOnGroups: {
-          select: {
-            user: { select: { id: true, name: true } },
+          include: {
+            user: {
+              include: {
+                Answer: {
+                  where: {
+                    group: {
+                      qsssa: {
+                        accessCode: code,
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },

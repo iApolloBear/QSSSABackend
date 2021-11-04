@@ -22,6 +22,10 @@ class Sockets {
         socket.leave(payload);
       });
 
+      socket.on("get-groups", async (payload) => {
+        socket.to(payload).emit("get-my-group", payload);
+      });
+
       socket.on("disconnect", () => {
         console.log("Disconnected");
       });

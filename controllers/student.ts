@@ -8,10 +8,9 @@ export const getMyGroup = async (req: Request, res: Response) => {
     const group = await prisma.userGroup.findFirst({
       include: {
         UsersOnGroups: {
-          select: {
+          include: {
             user: {
-              select: {
-                name: true,
+              include: {
                 Answer: {
                   where: {
                     group: {
@@ -32,9 +31,7 @@ export const getMyGroup = async (req: Request, res: Response) => {
             },
           },
         },
-        selected: {
-          select: { name: true },
-        },
+        selected: true,
         Message: {
           include: {
             user: true,

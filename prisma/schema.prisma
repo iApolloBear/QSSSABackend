@@ -44,6 +44,7 @@ model Qsssa {
   teacherId      String
   UsersOnQSSSAS  UsersOnQSSSAS[]
   UserGroup      UserGroup[]
+  createdAt      DateTime        @default(now())
 }
 
 model UsersOnQSSSAS {
