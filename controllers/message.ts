@@ -36,11 +36,52 @@ export const createMessage = async (req: Request, res: Response) => {
 export const getMessages = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const meesages = prisma.message.findMany({
+    const messages = await prisma.message.findMany({
+      orderBy: {
+        createdAt: "asc",
+      },
+      include: {
+        user: true,
+      },
       where: {
         groupId: id,
       },
     });
+    res.json({ messages });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Server Error",
+    });
+  }
+};
+
+export const getUserMessages = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const users = await prisma.message.findMany({
+      distinct: "userId",
+      include: {
+        user: {
+          include: {
+            Answer: {
+              include: {
+                Comment: {
+                  include: { user: true },
+                },
+              },
+              where: {
+                groupId: id,
+              },
+            },
+          },
+        },
+      },
+      where: {
+        groupId: id,
+      },
+    });
+    res.json({ users });
   } catch (err) {
     console.log(err);
     res.status(500).json({

@@ -12,6 +12,7 @@ import teacherRoutes from "../routes/teacher";
 import studentRoutes from "../routes/student";
 import messageRoutes from "../routes/message";
 import answerRoutes from "../routes/answer";
+import commentRoutes from "../routes/comment";
 import Sockets from "./socket";
 
 class Server {
@@ -29,6 +30,7 @@ class Server {
     student: "/api/student",
     messages: "/api/message",
     answers: "/api/answer",
+    comments: "/api/comment",
   };
 
   constructor() {
@@ -64,6 +66,7 @@ class Server {
     this.app.use(this.apiRoutes.student, studentRoutes);
     this.app.use(this.apiRoutes.messages, messageRoutes);
     this.app.use(this.apiRoutes.answers, answerRoutes);
+    this.app.use(this.apiRoutes.comments, commentRoutes);
   }
 
   listen() {

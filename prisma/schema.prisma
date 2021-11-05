@@ -30,6 +30,7 @@ model User {
   Message       Message[]
   Answer        Answer[]
   UserGroup     UserGroup[]
+  Comment       Comment[]
 }
 
 model Qsssa {
@@ -48,10 +49,11 @@ model Qsssa {
 }
 
 model UsersOnQSSSAS {
-  user    User   @relation(fields: [userId], references: [id])
-  userId  String
-  qsssa   Qsssa  @relation(fields: [qsssaId], references: [id])
-  qsssaId String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  qsssa     Qsssa    @relation(fields: [qsssaId], references: [id])
+  qsssaId   String
+  createdAt DateTime @default(now())
 
   @@id([userId, qsssaId])
 }
@@ -81,12 +83,13 @@ model UsersOnGroups {
 }
 
 model Message {
-  id      String    @id
-  text    String
-  user    User      @relation(fields: [userId], references: [id])
-  userId  String
-  group   UserGroup @relation(fields: [groupId], references: [id])
-  groupId String
+  id        String    @id
+  text      String
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  group     UserGroup @relation(fields: [groupId], references: [id])
+  groupId   String
+  createdAt DateTime  @default(now())
 }
 
 model Answer {
@@ -96,4 +99,14 @@ model Answer {
   userId  String
   group   UserGroup @relation(fields: [groupId], references: [id])
   groupId String
+  Comment Comment[]
+}
+
+model Comment {
+  id       String @id
+  text     String
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  answer   Answer @relation(fields: [answerId], references: [id])
+  answerId String
 }

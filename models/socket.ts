@@ -1,5 +1,9 @@
 import { Server } from "socket.io";
-import { getStudents } from "../controllers/socket";
+import {
+  getMessages,
+  getStudents,
+  getUserMessages,
+} from "../controllers/socket";
 
 class Sockets {
   private io: Server;
@@ -18,12 +22,29 @@ class Sockets {
         socket.to(payload).emit("get-students", await getStudents(payload));
       });
 
+      socket.on("join-group", (payload) => {
+        socket.join(payload);
+      });
+
       socket.on("leave", (payload) => {
         socket.leave(payload);
       });
 
       socket.on("get-groups", async (payload) => {
         socket.to(payload).emit("get-my-group", payload);
+      });
+
+      socket.on("send-message", async (payload) => {
+        this.io.to(payload).emit("get-messages", await getMessages(payload));
+        this.io
+          .to(payload)
+          .emit("user-messages", await getUserMessages(payload));
+      });
+
+      socket.on("get-user-messages", async (payload) => {
+        this.io
+          .to(payload)
+          .emit("user-messages", await getUserMessages(payload));
       });
 
       socket.on("disconnect", () => {
