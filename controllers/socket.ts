@@ -19,6 +19,46 @@ export const getStudents = async (code: string) => {
   }
 };
 
+export const getMyGroup = async (id: string) => {
+  try {
+    const group = await prisma.userGroup.findFirst({
+      include: {
+        UsersOnGroups: {
+          include: {
+            user: {
+              include: {
+                Answer: {
+                  include: {
+                    Like: true,
+                    Comment: true,
+                  },
+                  where: {
+                    groupId: id,
+                  },
+                },
+              },
+            },
+          },
+        },
+        selected: true,
+        Message: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      where: {
+        id: id,
+      },
+    });
+    if (!group) return {};
+    return group;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
+};
+
 export const getMessages = async (groupId: string) => {
   try {
     const group = await prisma.userGroup.update({
@@ -73,6 +113,39 @@ export const getUserMessages = async (groupId: string) => {
       },
     });
     return users;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+
+export const getGroups = async (id: string) => {
+  try {
+    let groups = await prisma.userGroup.findMany({
+      include: {
+        UsersOnGroups: {
+          include: {
+            user: {
+              include: {
+                Answer: {
+                  where: {
+                    group: {
+                      qsssa: {
+                        accessCode: id,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      where: {
+        qsssa: { accessCode: id },
+      },
+    });
+    return groups;
   } catch (err) {
     console.log(err);
     return [];

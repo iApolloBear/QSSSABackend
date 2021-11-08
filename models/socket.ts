@@ -1,6 +1,8 @@
 import { Server } from "socket.io";
 import {
+  getGroups,
   getMessages,
+  getMyGroup,
   getStudents,
   getUserMessages,
 } from "../controllers/socket";
@@ -45,6 +47,14 @@ class Sockets {
         this.io
           .to(payload)
           .emit("user-messages", await getUserMessages(payload));
+      });
+
+      socket.on("reload-group", async (payload) => {
+        this.io.to(payload).emit("my-group", await getMyGroup(payload));
+      });
+
+      socket.on("get-teacher-groups", async (payload) => {
+        this.io.to(payload).emit("teacher-groups", await getGroups(payload));
       });
 
       socket.on("disconnect", () => {

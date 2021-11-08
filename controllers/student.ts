@@ -12,6 +12,10 @@ export const getMyGroup = async (req: Request, res: Response) => {
             user: {
               include: {
                 Answer: {
+                  include: {
+                    Like: true,
+                    Comment: true,
+                  },
                   where: {
                     group: {
                       AND: [
