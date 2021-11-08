@@ -14,6 +14,7 @@ import messageRoutes from "../routes/message";
 import answerRoutes from "../routes/answer";
 import commentRoutes from "../routes/comment";
 import likeRoutes from "../routes/like";
+import adminRoutes from "../routes/admin";
 import Sockets from "./socket";
 
 class Server {
@@ -33,6 +34,7 @@ class Server {
     answers: "/api/answer",
     comments: "/api/comment",
     like: "/api/like",
+    admin: "/api/admin",
   };
 
   constructor() {
@@ -70,6 +72,7 @@ class Server {
     this.app.use(this.apiRoutes.answers, answerRoutes);
     this.app.use(this.apiRoutes.comments, commentRoutes);
     this.app.use(this.apiRoutes.like, likeRoutes);
+    this.app.use(this.apiRoutes.admin, adminRoutes);
   }
 
   listen() {
