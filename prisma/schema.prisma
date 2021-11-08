@@ -31,6 +31,7 @@ model User {
   Answer        Answer[]
   UserGroup     UserGroup[]
   Comment       Comment[]
+  Like          Like[]
 }
 
 model Qsssa {
@@ -100,11 +101,20 @@ model Answer {
   group   UserGroup @relation(fields: [groupId], references: [id])
   groupId String
   Comment Comment[]
+  Like    Like[]
 }
 
 model Comment {
   id       String @id
   text     String
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  answer   Answer @relation(fields: [answerId], references: [id])
+  answerId String
+}
+
+model Like {
+  id       String @id
   user     User   @relation(fields: [userId], references: [id])
   userId   String
   answer   Answer @relation(fields: [answerId], references: [id])

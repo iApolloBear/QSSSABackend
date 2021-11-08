@@ -59,6 +59,7 @@ export const getUserMessages = async (groupId: string) => {
                 Comment: {
                   include: { user: true },
                 },
+                Like: true,
               },
               where: {
                 groupId: groupId,
