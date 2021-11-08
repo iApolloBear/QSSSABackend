@@ -69,3 +69,23 @@ export const getMyGroup = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const setReady = async (req: Request, res: Response) => {
+  try {
+    const uid = req.uid;
+    const user = await prisma.user.update({
+      data: {
+        ready: true,
+      },
+      where: {
+        id: uid,
+      },
+    });
+    res.json({ user });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Server Error",
+    });
+  }
+};

@@ -140,6 +140,12 @@ export const getGroups = async (id: string) => {
             },
           },
         },
+        selected: true,
+        Message: {
+          include: {
+            user: true,
+          },
+        },
       },
       where: {
         qsssa: { accessCode: id },

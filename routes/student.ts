@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { getMyGroup } from "../controllers/student";
+import { getMyGroup, setReady } from "../controllers/student";
+import { validateJWT } from "../middlewares/validateJWT";
 const router = Router();
 
-router.get("/my-group/:code", getMyGroup);
+router.get("/my-group/:code", validateJWT, getMyGroup);
+router.put("/ready", validateJWT, setReady);
 
 export default router;

@@ -32,6 +32,10 @@ class Sockets {
         socket.leave(payload);
       });
 
+      socket.on("ready", async (payload) => {
+        socket.to(payload).emit("get-students", await getStudents(payload));
+      });
+
       socket.on("get-groups", async (payload) => {
         socket.to(payload).emit("get-my-group", payload);
       });

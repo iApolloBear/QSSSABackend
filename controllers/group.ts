@@ -29,9 +29,7 @@ export const createGroups = async (req: Request, res: Response) => {
           qsssaId: qsssa.id,
           selectedId: identifier
             ? null
-            : qsssa.UsersOnQSSSAS[
-                Math.floor(Math.random() * qsssa.UsersOnQSSSAS.length)
-              ].userId,
+            : chunks[i][Math.floor(Math.random() * chunks[i].length)].userId,
         },
       });
       if (chunks[i] !== undefined && chunks[i].length > 0) {
