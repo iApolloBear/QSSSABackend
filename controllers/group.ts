@@ -93,7 +93,6 @@ export const getQSSSAGroups = async (req: Request, res: Response) => {
 export const getGroup = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const group = await prisma.userGroup.findUnique({
       include: {
         UsersOnGroups: {
