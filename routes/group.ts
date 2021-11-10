@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { createGroups, getQSSSAGroups } from "../controllers/group";
+import { createGroups, getGroup, getQSSSAGroups } from "../controllers/group";
+import { validateJWT } from "../middlewares/validateJWT";
 
 const router = Router();
 
-router.get("/:code", getQSSSAGroups);
-router.post("/", createGroups);
+router.get("/qsssa/:code", validateJWT, getQSSSAGroups);
+router.get("/group/:id", validateJWT, getGroup);
+router.post("/", validateJWT, createGroups);
 
 export default router;

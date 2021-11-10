@@ -89,3 +89,46 @@ export const getQSSSAGroups = async (req: Request, res: Response) => {
     res.status(500).json({ msg: "Server Error" });
   }
 };
+
+export const getGroup = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const group = await prisma.userGroup.findUnique({
+      include: {
+        UsersOnGroups: {
+          include: {
+            user: {
+              include: {
+                Answer: {
+                  include: {
+                    Like: true,
+                    Comment: true,
+                  },
+                  where: {
+                    groupId: id,
+                  },
+                },
+              },
+            },
+          },
+        },
+        selected: true,
+        Message: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      where: {
+        id: id,
+      },
+    });
+    res.json({ group });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      msg: "Server Error",
+    });
+  }
+};

@@ -103,6 +103,9 @@ export const getQSSSA = async (req: Request, res: Response) => {
   try {
     const { code } = req.params;
     const qsssa = await prisma.qsssa.findUnique({
+      include: {
+        UserGroup: true,
+      },
       where: { accessCode: code },
     });
     if (!qsssa) return res.status(404).json({ msg: "QSSSA Not Found" });
