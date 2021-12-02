@@ -74,7 +74,7 @@ export const createQSSSA = async (req: Request, res: Response) => {
         sentenceStem: sentenceStem,
         accessCode: code,
         img: name,
-        onlyRecordings: onlyRecordings,
+        onlyRecordings: (onlyRecordings === "true"),
         teacher: {
           connect: { id: uid },
         },
