@@ -14,7 +14,11 @@ export const getMyGroup = async (req: Request, res: Response) => {
                 Answer: {
                   include: {
                     Like: true,
-                    Comment: true,
+                    Comment: {
+                      include: {
+                        user: true,
+                      },
+                    },
                   },
                   where: {
                     group: {

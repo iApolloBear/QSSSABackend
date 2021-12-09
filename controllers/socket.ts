@@ -30,7 +30,11 @@ export const getMyGroup = async (id: string) => {
                 Answer: {
                   include: {
                     Like: true,
-                    Comment: true,
+                    Comment: {
+                      include: {
+                        user: true,
+                      },
+                    },
                   },
                   where: {
                     groupId: id,
