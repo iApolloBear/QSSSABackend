@@ -16,6 +16,7 @@ import commentRoutes from "../routes/comment";
 import likeRoutes from "../routes/like";
 import adminRoutes from "../routes/admin";
 import Sockets from "./socket";
+import path from "path";
 
 class Server {
   private app: Application;
@@ -73,6 +74,11 @@ class Server {
     this.app.use(this.apiRoutes.comments, commentRoutes);
     this.app.use(this.apiRoutes.like, likeRoutes);
     this.app.use(this.apiRoutes.admin, adminRoutes);
+    this.app.get("/*", (req, res) => {
+      res.sendFile(path.join(__dirname, "../public/index.html"), (err) =>
+        res.status(500).send(err)
+      );
+    });
   }
 
   listen() {
