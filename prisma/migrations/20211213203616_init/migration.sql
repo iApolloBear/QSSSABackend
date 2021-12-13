@@ -22,7 +22,7 @@ CREATE TABLE "Qsssa" (
     "question" TEXT NOT NULL,
     "sentenceStem" TEXT,
     "accessCode" TEXT NOT NULL,
-    "onlyRecordings" BOOLEAN NOT NULL DEFAULT false,
+    "type" TEXT NOT NULL,
     "img" TEXT,
     "teacherId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

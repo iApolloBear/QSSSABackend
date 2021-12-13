@@ -7,6 +7,14 @@ export const createAnswer = async (req: Request, res: Response) => {
   try {
     const uid = req.uid;
     const { groupId } = req.body;
+    await prisma.userGroup.update({
+      data: {
+        active: true,
+      },
+      where: {
+        id: groupId,
+      },
+    });
     const id = randomBytes(16).toString("hex");
     const name = await uploadBlob(req.files, "mp3", "audio");
     let answer = await prisma.answer.findFirst({
