@@ -35,18 +35,18 @@ model User {
 }
 
 model Qsssa {
-  id             String          @id
-  topic          String
-  question       String
-  sentenceStem   String?
-  accessCode     String          @unique
-  onlyRecordings Boolean         @default(false)
-  img            String?
-  teacher        User            @relation(fields: [teacherId], references: [id])
-  teacherId      String
-  UsersOnQSSSAS  UsersOnQSSSAS[]
-  UserGroup      UserGroup[]
-  createdAt      DateTime        @default(now())
+  id            String          @id
+  topic         String
+  question      String
+  sentenceStem  String?
+  accessCode    String          @unique
+  type          String
+  img           String?
+  teacher       User            @relation(fields: [teacherId], references: [id])
+  teacherId     String
+  UsersOnQSSSAS UsersOnQSSSAS[]
+  UserGroup     UserGroup[]
+  createdAt     DateTime        @default(now())
 }
 
 model UsersOnQSSSAS {

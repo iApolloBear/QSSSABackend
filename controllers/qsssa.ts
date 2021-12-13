@@ -59,7 +59,7 @@ export const getQSSSAS = async (req: Request, res: Response) => {
 export const createQSSSA = async (req: Request, res: Response) => {
   try {
     const uid = req.uid;
-    const { topic, question, sentenceStem, onlyRecordings } = req.body;
+    const { topic, question, sentenceStem, type } = req.body;
     const id = randomBytes(16).toString("hex");
     const code = randomBytes(16).toString("hex").slice(0, 6);
     let name;
@@ -72,9 +72,9 @@ export const createQSSSA = async (req: Request, res: Response) => {
         topic: topic,
         question: question,
         sentenceStem: sentenceStem,
+        type: type,
         accessCode: code,
         img: name,
-        onlyRecordings: (onlyRecordings === "true"),
         teacher: {
           connect: { id: uid },
         },
