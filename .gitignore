@@ -1,5 +1,4 @@
 # Logs
-*.sqlite
 logs
 *.log
 npm-debug.log*
