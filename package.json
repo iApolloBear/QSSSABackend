@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/app.js",
-    "postinstall": "tsc",
+    "postinstall": "tsc && prisma generate",
     "watch-node": "nodemon dist/app.js",
     "watch-ts": "tsc -w"
   },
